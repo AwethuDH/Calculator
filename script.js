@@ -7,7 +7,6 @@
             let resetNext = false;
             let calculationHistory = [];
 
-            // Add subtle 3D rotation on mouse move
             document.addEventListener('mousemove', (e) => {
                 const xAxis = (window.innerWidth / 2 - e.pageX) / 25;
                 const yAxis = (window.innerHeight / 2 - e.pageY) / 25;
@@ -19,7 +18,6 @@
             }
 
             function sanitizeInput(input) {
-                // Replace calculator symbols with JS operators
                 return input.replace(/×/g, '*').replace(/÷/g, '/');
             }
 
@@ -69,17 +67,14 @@
                             if (!currentInput) return;
                             
                             const sanitized = sanitizeInput(currentInput);
-                            // More secure evaluation with basic validation
                             const validExpression = sanitized.replace(/[^-()\d/*+.]/g, '');
                             
-                            // Check for empty expression or invalid operators
                             if (!validExpression || /[/*+.-]{2,}/.test(validExpression)) {
                                 throw new Error('Invalid expression');
                             }
                             
                             const result = eval(validExpression);
                             
-                            // Store in history
                             calculationHistory.push(`${currentInput} = ${result}`);
                             
                             updateDisplay(result);
@@ -102,17 +97,14 @@
                             resetNext = false;
                         }
                         
-                        // Prevent multiple decimal points in a number
                         if (val === '.' && currentInput.split(/[\+\-\*\/]/).pop().includes('.')) {
                             return;
                         }
                         
-                        // Prevent operators at the beginning (except minus for negative numbers)
                         if (['+', '×', '÷', '/', '*'].includes(val) && !currentInput) {
                             return;
                         }
                         
-                        // Prevent consecutive operators
                         const lastChar = currentInput.slice(-1);
                         if (['+', '-', '×', '÷', '/', '*'].includes(val) && 
                             ['+', '-', '×', '÷', '/', '*'].includes(lastChar)) {
@@ -125,6 +117,5 @@
                 });
             });
 
-            // Initialize display
             updateDisplay('0');
         });
